@@ -613,12 +613,14 @@ if(Serial.available()>0)
 
 ### Python Code:
 ``` Python
-rawData = ardata(7,lines=50,dynamic=True,msg='d')  # if set is not used, the most repeated set of value would be taken as average !
+rawData = ardata(7,lines=50,dynamic=True,msg='d')  
+# if set is not used, the most repeated set of value would be taken as average !
 
 # rawHybrid contains hybridized form of rawData
 rawHybrid = hybridize( rawData )
 print(rawHybrid)
-Hybrid = filter(rawHybrid,expectedType='num',limit=[0,3.5]) # Just filtering out garbage values if any
+Hybrid = filter(rawHybrid,expectedType='num',limit=[0,3.5]) 
+# Just filtering out garbage values if any
 print("")
 print(Hybrid)
 
