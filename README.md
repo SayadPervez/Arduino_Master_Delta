@@ -682,7 +682,8 @@ void loop()
 ### Python Code for impulse removal:
 ```python
 # collecting data and saving it as a list in rawData
-rawData = ardata(7,lines=50,dynamic=True,msg='d')  # if set is not used, the most repeated set of value would be taken as average !
+rawData = ardata(7,lines=50,dynamic=True,msg='d')  
+# if set is not used, the most repeated set of value would be taken as average !
 
 # rawHybrid contains hybridized form of rawData
 rawHybrid = hybridize( rawData )
@@ -702,12 +703,14 @@ ___
 ### Arduino Code is same as the above one ! Python code for impulse detection and measurement is :
 ```python
 # collecting data and saving it as a list in rawData
-rawData = ardata(7,lines=50,dynamic=True,msg='d')  # if set is not used, the most repeated set of value would be taken as average !
+rawData = ardata(7,lines=50,dynamic=True,msg='d') 
+# if set is not used, the most repeated set of value would be taken as average !
 
 # rawHybrid contains hybridized form of rawData
 rawHybrid = hybridize( rawData )
 print(rawHybrid)
-filteredHybrid = filter(rawHybrid,expectedType='num',limit=[0,200],maxDeviation=7,closeTo=20) # since  I know impulse are going to be near 20 cm from the ultrasonic sensor !
+filteredHybrid = filter(rawHybrid,expectedType='num',limit=[0,200],maxDeviation=7,closeTo=20) 
+# since  I know impulse are going to be near 20 cm from the ultrasonic sensor !
 print("")
 print(filteredHybrid)
 
