@@ -238,7 +238,8 @@ hyb = ( [ 1,2,3,4,5,6,7,8,9,10 ] , [ 10,9,8,7,6,1,4,3,2,-5 ] )
 anyFunction( x=X , y=Y )
 
 # Method 2:
-anyFunction( hyb ) # Since for most of the data science fucntions, the first parameter is a hybrid,
+anyFunction( hyb ) # Since for most of the data science fucntions, 
+# the first parameter is a hybrid,
 # it can be passed directly !
 
 # It is evident that Method 2 is less time consuming than Method 1
