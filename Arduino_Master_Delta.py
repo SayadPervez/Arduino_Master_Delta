@@ -1,4 +1,4 @@
-# BETA Version 0.8
+# BETA Version 0.8.1
 
 ##############################################################################################################################################
 ##############################################################################################################################################
@@ -179,6 +179,23 @@ def maxDev(Index,li,avg,max_deviation):
     except Exception as e:
         print(str(e)+'ERROR ID - maxDev')
 
+# Filters based on max deviation allowed
+def minDev(Index,li,avg,max_deviation):
+    try:
+        retIn=[]
+        retli=[]
+        Index,li=__numlist(Index,li)
+        for ele in range(len(li)):
+            d=__diff(li[ele],avg)
+            if(d>max_deviation):
+                retli.append(li[ele])
+                retIn.append(Index[ele])
+            else:
+                pass
+        return(retIn,retli)
+    except Exception as e:
+        print(str(e)+'ERROR ID - minDev')
+
 #checks if a parameter is of numtype
 def __isnum(var):
     try:
@@ -253,7 +270,7 @@ def __limits(Index,Data,s,e):
         print(str(e)+'ERROR ID - limits')
 
 # Filters data recieved from arduino
-def filter(hybrid=None,index=[],data=[],expected=[],expectedType=None,maxDeviation=None,closeTo=None,numeric=True,limit=[],frequentAverage=False):
+def filter(hybrid=None,index=[],data=[],expected=[],expectedType=None,maxDeviation=None,minDeviation=None,closeTo=None,farFrom=None,numeric=True,limit=[],frequentAverage=False):
 
     # Initialization
     if expectedType!=None:
@@ -294,14 +311,14 @@ def filter(hybrid=None,index=[],data=[],expected=[],expectedType=None,maxDeviati
     elif __isunique(data)==False and frequentAverage==True:
         average=most_frequent(data)
         print(f'Average is most_frequent data = {average}')
-    elif(numeric==True) and (limit!=[]) and frequentAverage==False:
+    elif(numeric==True) and frequentAverage==False:
         average=sum(data)/len(data)
         print(f'Average is calculated as {average}')
     else:
-        if (numeric==True) and expected==[] and expectedType==None:
+        if (numeric==True) and expected==[] and expectedType==None and closeTo == None and farFrom == None:
             print("""
             Not enough information to filter !!
-            Pass either limit , closeTo , expected or maxDeviation""")
+            Pass either limit , closeTo , expected , farFrom , minDeviation or maxDeviation""")
             raise BaseException
     # Average obtained
     if expected!=[] :
@@ -313,9 +330,16 @@ def filter(hybrid=None,index=[],data=[],expected=[],expectedType=None,maxDeviati
     if maxDeviation!=None :
         index,data=maxDev(index,data,average,maxDeviation)
     pass
-    if maxDeviation==None and closeTo!=None :
-        index,data=maxDev(index,data,average,5)
+    if minDeviation!=None and (farFrom!="avg"):
+        index,data=minDev(index,data,farFrom,minDeviation)
+    elif minDeviation!=None and (farFrom=="avg"):
+        index,data = minDev(index,data,average,minDeviation)
     pass
+    if maxDeviation==None and closeTo!=None :
+        index,data=maxDev(index,data,average,1)
+    pass
+    if minDeviation==None and farFrom!=None :
+        index,data = minDev(index,data,farFrom,1)
     return(index,data)
 
 #Most frequent piece of data
