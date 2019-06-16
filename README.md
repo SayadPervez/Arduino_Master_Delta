@@ -418,7 +418,7 @@ ___
 |Parameter| Usage|
 |---------|------|
 |y|The distance from the origin is specified here|
-|lbl = 'horizontal'|label is set to 'marker' by default|
+|lbl = 'horizontal'|label is set to 'horizontal' by default|
 |start = 0| value from which this line should start|
 |end = 10 | value at which this line should end |
 |color='yellow'|Color of the horizontal|
@@ -433,7 +433,7 @@ ___
 |Parameter| Usage|
 |---------|------|
 |x|The distance from the origin is specified here|
-|lbl = 'vertical'|label is set to 'marker' by default|
+|lbl = 'vertical'|label is set to 'vertical' by default|
 |start = 0| value from which this line should start|
 |end = 10 | value at which this line should end |
 |color='yellow'|Color of the vertical|
