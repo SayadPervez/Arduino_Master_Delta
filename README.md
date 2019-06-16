@@ -1,10 +1,15 @@
-# Arduino_Master_Delta Version 0.1
+# Arduino_Master_Delta Version 0.8
 ___
 # What's the difference between Alpha and Delta Versions ?
 #### >>> Alpha version provides ` easier but approximate ` interface for data extraction and Visualization **_(Since X values are automatically generated and fit enables only approximation of the data plotting)_**.
 #### >>> Delta version of Arduino_Master is designed to deliver `accurate visualization` and hence a bit more complex than Alpha versions.
 #### >>> To ease using of functions, Delta version uses a specific type of input called `hybrid` to represent both the X and Y values of a given plot with just one variable.
 #### >>> Default plotting style is 'dark_background' unlike 'ggplot' of Alpha.
+#### >>> Link to Arduino_Master (Alpha Version) [Arduino_Master_Alpha](https://pypi.org/project/Arduino-Master/)
+___
+___
+# What's New in 0.2 ?
+#### >>> Bugs related to readSerial,writeSerial and dynamicSerial fixed.
 ___
 ___
 # Intro:
@@ -238,8 +243,7 @@ hyb = ( [ 1,2,3,4,5,6,7,8,9,10 ] , [ 10,9,8,7,6,1,4,3,2,-5 ] )
 anyFunction( x=X , y=Y )
 
 # Method 2:
-anyFunction( hyb ) # Since for most of the data science fucntions, 
-# the first parameter is a hybrid,
+anyFunction( hyb ) # Since for most of the data science fucntions, the first parameter is a hybrid,
 # it can be passed directly !
 
 # It is evident that Method 2 is less time consuming than Method 1
@@ -500,10 +504,10 @@ ___
 |index = []|This parameter accepts a list of X-axis values.|
 | data = []| This parameter accepts a list of Y-axis values. |
 | expected = [ ] | Pass a list of expected elements that you need in the filtered list |
-| expectedType = [ ] | Filters data based on the type. You can pass the following as arguements : int , float , str , 'num' , 'all'. Note that **num** and **all** alone are placed within single quotes since they are custom made types. 'num' denotes all numeric data like int and float. 'all' denotes all kinds of data.|
+| expectedType = [ ] | Filters data based on the type. You can pass the following as arguements : int , float , str , 'num' , 'all'. Note that **num** and **all** alone are placed within single quotes since they are custom made types. 'num' denotes all numeric data like int and float. 'all' denotes all kinds of data. When expectedType is used, numeric is set to False|
 |maxDeviation = None| Permitted maximum deviation from calculated average. |
 |closeTo = None| Used to find data close to the given arguement. If closeTo alone is used without max_deviation, then max_deviation is taken as 1 by default. |
-|numeric = True| Used to specify if you are looking for numeric data for calculation. If you wish to have strings of data in your filtered list make sure you set numeric to False. |
+|numeric = True| Used to specify if you are looking for numeric data for calculation. If you wish to have strings of data in your filtered list make sure you set numeric to False. numeric = True converts all values to float and that's the reason why when expectedType is used, numeric is set to False. |
 |limit = [ ]| Used to specify filter out garbage values! It basically means, no matter what, the data would not have gone beyond these limits. If it did, it is a Garbage Value. The format is **_limit=[ start-limit , end-limit ]_** |
 |frequentAverage = False|Used to specify if to use most frequent data as average|
 
@@ -614,14 +618,12 @@ if(Serial.available()>0)
 
 ### Python Code:
 ``` Python
-rawData = ardata(7,lines=50,dynamic=True,msg='d')  
-# if set is not used, the most repeated set of value would be taken as average !
+rawData = ardata(7,lines=50,dynamic=True,msg='d')  # if set is not used, the most repeated set of value would be taken as average !
 
 # rawHybrid contains hybridized form of rawData
 rawHybrid = hybridize( rawData )
 print(rawHybrid)
-Hybrid = filter(rawHybrid,expectedType='num',limit=[0,3.5]) 
-# Just filtering out garbage values if any
+Hybrid = filter(rawHybrid,expectedType='num',limit=[0,3.5]) # Just filtering out garbage values if any
 print("")
 print(Hybrid)
 
@@ -683,8 +685,7 @@ void loop()
 ### Python Code for impulse removal:
 ```python
 # collecting data and saving it as a list in rawData
-rawData = ardata(7,lines=50,dynamic=True,msg='d')  
-# if set is not used, the most repeated set of value would be taken as average !
+rawData = ardata(7,lines=50,dynamic=True,msg='d')  # if set is not used, the most repeated set of value would be taken as average !
 
 # rawHybrid contains hybridized form of rawData
 rawHybrid = hybridize( rawData )
@@ -704,14 +705,12 @@ ___
 ### Arduino Code is same as the above one ! Python code for impulse detection and measurement is :
 ```python
 # collecting data and saving it as a list in rawData
-rawData = ardata(7,lines=50,dynamic=True,msg='d') 
-# if set is not used, the most repeated set of value would be taken as average !
+rawData = ardata(7,lines=50,dynamic=True,msg='d')  # if set is not used, the most repeated set of value would be taken as average !
 
 # rawHybrid contains hybridized form of rawData
 rawHybrid = hybridize( rawData )
 print(rawHybrid)
-filteredHybrid = filter(rawHybrid,expectedType='num',limit=[0,200],maxDeviation=7,closeTo=20) 
-# since  I know impulse are going to be near 20 cm from the ultrasonic sensor !
+filteredHybrid = filter(rawHybrid,expectedType='num',limit=[0,200],maxDeviation=7,closeTo=20) # since  I know impulse are going to be near 20 cm from the ultrasonic sensor !
 print("")
 print(filteredHybrid)
 
