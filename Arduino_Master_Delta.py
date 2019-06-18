@@ -1,4 +1,4 @@
-# BETA Version 0.8.1
+# Delta Version 0.9.2
 
 ##############################################################################################################################################
 ##############################################################################################################################################
@@ -69,6 +69,28 @@ def hybridize(li1,li2=None):
         li2=li1.copy()
         li1=[i for i in range(len(li2))]
     return(li1,li2)
+
+# Functionality of compress() enhanced to hybrids
+def cpress(index,li=[]):
+    try:
+        #inittialization
+        if li==[] :
+            li=index.copy()
+            index= [j for j in range(len(li))]
+
+
+        retli=[li[0]]
+        ind=[0]
+        i=1
+        for i in range(len(li)):
+            lastEle = retli[-1]
+            currentEle = li[i]
+            if (currentEle!=lastEle):
+                retli.append(currentEle)
+                ind.append(index[i])
+        return(ind,retli)
+    except Exception as e:
+        print(str(e)+"\n ERROR ID - cpress")
 
 # You know what I do
 def __elements(g_string):
@@ -288,6 +310,10 @@ def filter(hybrid=None,index=[],data=[],expected=[],expectedType=None,maxDeviati
         raise AssertionError
     elif index!=[] and (len(index)==len(data)):
         pass
+    if farFrom==None and closeTo!=None and maxDeviation !=None and minDeviation!= None:
+        farFrom = closeTo
+    if farFrom!=None and closeTo==None and maxDeviation !=None and minDeviation!= None:
+        closeTo=farFrom
 
     # If data is numeric
     if(numeric==True):
@@ -330,7 +356,7 @@ def filter(hybrid=None,index=[],data=[],expected=[],expectedType=None,maxDeviati
     if maxDeviation!=None :
         index,data=maxDev(index,data,average,maxDeviation)
     pass
-    if minDeviation!=None and (farFrom!="avg"):
+    if minDeviation!=None and (__isnum(farFrom)):
         index,data=minDev(index,data,farFrom,minDeviation)
     elif minDeviation!=None and (farFrom=="avg"):
         index,data = minDev(index,data,average,minDeviation)
@@ -359,7 +385,11 @@ def least_frequent(List):
 #Compresses data
 def compress(li):
     try:
-        return([i for i,j in zip_longest(li,li[1:]) if i!=j])
+        if (type(li)!=type([])):
+            I,D=li
+            return(cpress(I,D))
+        else:
+            return([i for i,j in zip_longest(li,li[1:]) if i!=j])
     except Exception as e:
         print(str(e)+'ERROR ID - compress')
 

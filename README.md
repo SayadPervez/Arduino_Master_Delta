@@ -1,4 +1,4 @@
-# Arduino_Master_Delta Version 0.8
+# Arduino_Master_Delta Version 1.0
 ___
 # What's the difference between Alpha and Delta Versions ?
 #### >>> Alpha version provides ` easier but approximate ` interface for data extraction and Visualization **_(Since X values are automatically generated and fit enables only approximation of the data plotting)_**.
@@ -8,8 +8,11 @@ ___
 #### >>> Link to Arduino_Master (Alpha Version) [Arduino_Master_Alpha](https://pypi.org/project/Arduino-Master/)
 ___
 ___
-# What's New in 0.2 ?
-#### >>> Bugs related to readSerial,writeSerial and dynamicSerial fixed.
+# What's New in 1.0 ?
+#### >>> Bugs related to readSerial, writeSerial and dynamicSerial fixed.
+#### >>> **`farFrom`** and **`minDeviation`** parameters added to **`filter`** function.
+#### >>> Bugs in filter function that prevented the use of farFrom, closeTo, maxDeviation and minDeviation parameters together **_rectified_**.
+#### >>> **`compress()`** function updated to work with hybrids too !!
 ___
 ___
 # Intro:
@@ -46,7 +49,7 @@ ___
 #### $ filter
 ___
 ___
-# ardata():
+# ardata():-       **`Returns a list`**
 #### ardata function is used to communicate with the arduino via Serial. This function returns a list of values available in the Serial port.
 #### **`ardata(COM ,lines= 50 ,baudrate= 9600 ,timeout= 1 ,squeeze= True ,dynamic= False ,msg= 'a' ,dynamicDelay= 0.5, numeric= True )`** is the function header.
 ___
@@ -82,7 +85,7 @@ info = compress(data)
 print(info)
 # This will print [ 1 , 2 , 3 , 5 , 1 , 2 , 5 ]
 ```
-#### **`squeeze`** uses the same function and takes either True (or) False boolean values as parameters. By default, this parameter is set to **True**. Referencing the above example code, if squeeze is set to **False**, ardata will retrun **data** and if it is set to **True** which is the default setting, it will return **info**.
+#### **`squeeze`** uses the same function and takes either True (or) False boolean values as parameters. By default, this parameter is set to **True**. Referencing the above example code, if squeeze is set to **False**, ardata will return **data** and if it is set to **True** which is the default setting, it will return **info**.
 ___
 ## dynamic
 #### **`dynamic`** is used to specify if the Serial communication is just to read from the serial port or for both reading and writing to the serial port. The default value is **false** which means you can only read from the Serial port. If dynamic is set to true, the string from the **`msg`** parameter will be written to the Serial port every time before reading a value.
@@ -177,7 +180,7 @@ Since squeeze by default is set to True, data is compressed!
 ### The functionality being inherited from pyserial, It is possible to call all functions from pyserial module without prefixing the functions with 'serial.' statement.
 ___
 ___
-# readSerial
+# readSerial:-       **`Returns a value( int / float / String )`**
 #### **`readSerial`** reads only one line from the Arduino.
 #### **`readSerial( COM , baudrate = 9600 , timeout = 1 )`** is the function header.
 | Parameters | Usage |
@@ -186,10 +189,10 @@ ___
 | baudrate =9600| Set the baudrate. Default value is **9600**. |
 | timeout =1| Set the timeout. Default is **1**|
 
-#### returns a list with one element (if available within timeout !). numeric is set to False for readSerial.
+#### returns a element (if available within timeout !). numeric is set to False for readSerial.
 ___
 ___
-# writeSerial()
+# writeSerial():-       **`Returns Nothing `**
 #### **`writeSerial`** writes only one string to the Arduino's Serial monitor.
 #### **`writeSerial(COM,baudrate=9600,timeout=1,msg="")`** is the function header.
 | Parameters | Usage |
@@ -202,7 +205,7 @@ ___
 #### Returns nothing !
 ___
 ___
-# dynamicSerial
+# dynamicSerial:-        **`Returns a list with only one element`**
 #### **`dynamicSerial`** is similar to dynamic mode of ardata() except that this returns a **_list_** with just one element in it.
 #### **`dynamicSerial( COM , baudrate = 9600 , timeout = 1 , msg = "a" , dynamicDelay = 0.5 )`** is the function header.
 | Parameters | Usage |
@@ -249,7 +252,7 @@ anyFunction( hyb ) # Since for most of the data science fucntions, the first par
 # It is evident that Method 2 is less time consuming than Method 1
 ```
 ___
-# hybridize
+# hybridize:-       **`Returns a hybrid`**
 #### **`hybridize`** takes one or two lists as parameters and returns an hybrid.
 #### **`hybridize ( li1 , li2 = None )`** is the function header.
 #### When two lists are passed, li1 corresponds to index and li2 corresponds to amplitude.
@@ -289,7 +292,7 @@ print(listY)
 ```
 ___
 ___
-# Graph
+# Graph:-       **`Returns Nothing. Just plots a Graph`**
 #### **`Graph`** function is used to visualize a list of data.
 #### **`Graph( hybrid= None, x= [], y= [], xlabel= 'dataPiece', ylabel= 'Amplitude', label= 'myData', color= 'red', title= 'Graph', markersize= 7, stl= 'dark_background', d= {}, mark= 'x' )`** is the function header.
 | Parameters   | Usage   |
@@ -354,7 +357,7 @@ Graph(hyb)
 ![Graph_4](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/G4.jpeg?raw=true)
 ___
 ___
-# compGraph
+# compGraph:-       **`Returns Nothing. Just plots a Graph`**
 #### **`compGraph`** is used to compare two sets of data (any combination of list, dictionary or a hybrid)
 #### **`compGraph( hybrid1= None, hybrid2 =None, x1= [], y1= [], x2= [], y2= [], xlabel= 'dataPiece', ylabel= 'Amplitude', label1= 'myData-1', label2= 'myData-2', color1= 'red', color2= 'blue', title= 'Graph', markersize= 7, stl= 'dark_background', fit= True, d1= {}, d2= {} )`** is the function header.
 | Parameters   | Usage   |
@@ -416,7 +419,7 @@ compGraph(hyb1,hyb2) # fit is set to False
 #### compGraph is similar to Graph function just with visualizing one more list of data
 ___
 ___
-# horizontal
+# horizontal:-       **`Returns Nothing. Just a placeholder for graph`**
 #### Creates a line parallel to  X-axis.
 #### **`horizontal( y , lbl = 'horizontal' , start = 0 , end = 10 , stl = 'dark_background',color='yellow')`** is the function header.
 |Parameter| Usage|
@@ -431,7 +434,7 @@ ___
 #### Use this function before the Graph() function you wish the line to plotted in.
 ___
 ___
-# vertical
+# vertical:-       **`Returns Nothing. Just a placeholder for graph`**
 #### Creates a line parallel to  Y-axis.
 #### **`vertical( x , lbl = 'vertical' , start = 0 , end = 10 , stl = 'dark_background',color='yellow')`** is the function header.
 |Parameter| Usage|
@@ -455,7 +458,7 @@ Graph(y=[1,2,3,4,5,6,7,8,9,10])
 ```
 ![HorizonalVertical](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/VerticalHorizontal.jpeg?raw=true)
 ___
-# marker
+# marker:-       **`Returns Nothing. Just a placeholder for graph`**
 #### **`marker`** function creates a plus shaped plot at a given co-ordinate.
 #### **`marker( x , y , limit = 1 , lbl = "marker" , stl = 'dark_background',color='yellow')`** is the function header.
 |Parameter| Usage|
@@ -476,28 +479,32 @@ Graph(y=[1,2,3,4,5,6,7,8,9,10])
 ![markers_2](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/Marker.jpeg?raw=true)
 ___
 ___
-# most_frequent
+# most_frequent:-       **`Returns a value( int / float / String )`**
 #### **`most_frequent`** is used to return the most frequently occurring element in a given list.
 #### **`most_frequent(List)`** is the function header. Just pass a list as a parameter, and it will return the most repeated element in the given list.
 ___
-# least_frequent
+# least_frequent:-       **`Returns a value( int / float / String )`**
 #### **`least_frequent`** is used to return the least frequently occurring element in a given list.
 #### **`least_frequent(List)`** is the function header. Just pass a list as a parameter, and it will return the least repeated element in the given list.
 ___
 ___
-# compress
+# compress:-       **`Returns a list if you pass a list. Returns a hybrid if you pass a hybrid`**
 #### **`compress()`** which is used to remove **_repeated and sequential_** set of data with a single piece of data.
 #### **`compress(li)`** is the function header.
-#### Unfortunately compress function is only compatible with lists in this version and not with hybrids. Next version has a promising chance for this feature.
+#### From this version(0.9.2), compress function is compatible with both lists and hybrids.
+#### If a list is passed, this function returns a list and if a hybrid is passed, this function returns a hybrid.
+#### In the below pic, red colored plot refers to the actual, uncompressed data while blue represents compressed data. As you can see the only purpose of compress is to show the trend of data and since Fit is enabled, an approximation of data is shown. In simple words, **`compress`** replaces continuous equivalent elements by a single element. **`compress`** is used only to visualize how many times a data piece varies to and fro and hence just an approximation. The next pics also has the same color representation as of before and demonstrates **`compress()`** function !
+## When lists are used, we observe that the compressed data is approximated.
 ![compress](https://github.com/SayadPervez/Arduino_Master/blob/master/compress.JPG?raw=true)
-#### In the above pic, red colored plot refers to the actual, uncompressed data while blue represents compressed data. As you can see the only purpose of compress is to show the trend of data and since Fit is enabled, an approximation of data is shown. In simple words, **`compress`** replaces continuous equivalent elements by a single element. **`compress`** is used only to visualize how many times a data piece varies to and fro and hence just an approximation. The next pics also has the same color representation as of before and demonstrates **`compress()`** function !
 ![compress2](https://github.com/SayadPervez/Arduino_Master/blob/master/compress2.JPG?raw=true)
 ![compress3](https://github.com/SayadPervez/Arduino_Master/blob/master/compress3.JPG?raw=true)
+## When a hybrid is used, we get an accurate representation of data.
+![compress4](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/compress4.jpeg?raw=true)
 ___
 ___
-# filter
+# filter:-       **`Returns a hybrid`**
 #### filter function is used to remove unnecessary data from a list.**_This function is compatible with lists and hybrids._**.This function returns a hybrid !
-#### **`filter( hybrid= None, index= [], data= [], expected= [], expectedType= None, maxDeviation= None, closeTo= None, numeric= True, limit= [], frequentAverage= False )`** is the function header.
+#### **`filter( hybrid= None, index= [], data= [], expected= [], expectedType= None, maxDeviation= None, minDeviation= None, closeTo= None, farFrom= None, numeric= True, limit= [], frequentAverage= False )`** is the function header.
 | Parameters   | Usage   |
 |--------------|---------|
 | hybrid = None | Pass an hybrid|
@@ -506,7 +513,9 @@ ___
 | expected = [ ] | Pass a list of expected elements that you need in the filtered list |
 | expectedType = [ ] | Filters data based on the type. You can pass the following as arguements : int , float , str , 'num' , 'all'. Note that **num** and **all** alone are placed within single quotes since they are custom made types. 'num' denotes all numeric data like int and float. 'all' denotes all kinds of data. When expectedType is used, numeric is set to False|
 |maxDeviation = None| Permitted maximum deviation from calculated average. |
+|minDeviation=None|Permitted minimum deviation from calculated average or **`farFrom`** parameter.|
 |closeTo = None| Used to find data close to the given arguement. If closeTo alone is used without max_deviation, then max_deviation is taken as 1 by default. |
+|farFrom=None| Pass an **numeric value** or **'avg' (string)**. if farFrom!='avg', data **`minDeviation`** units farther from the farFrom parameter is considered.      If farFrom=='avg', data **`minDeviation`** units away from average is considered.If minDeviation is not passed, minDeviation is taken as 1.  |
 |numeric = True| Used to specify if you are looking for numeric data for calculation. If you wish to have strings of data in your filtered list make sure you set numeric to False. numeric = True converts all values to float and that's the reason why when expectedType is used, numeric is set to False. |
 |limit = [ ]| Used to specify filter out garbage values! It basically means, no matter what, the data would not have gone beyond these limits. If it did, it is a Garbage Value. The format is **_limit=[ start-limit , end-limit ]_** |
 |frequentAverage = False|Used to specify if to use most frequent data as average|
