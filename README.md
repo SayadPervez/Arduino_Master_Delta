@@ -845,6 +845,28 @@ compGraph(hyb,flatDataNone)
 ![cleanData2](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/level2%20vs%20level3.JPG?raw=true)
 ___
 ___
+# detectImp():- **`Returns a Hybrid`**
+#### Used to detect impulses in a given Hybird.
+#### **`detectImp( hyb )`** is the function header.
+## Eg:
+```python
+from AMD import *
+
+y = [33, 32, 64, 67, 4, 34, 32, 47, 33.5, 26, 32, 46, 34, 51, 68, 23, 58, 33.6, 33.2, 11, 17, 33, 53, 33, 9, 23, 33, 65, 7, 34, 25, 38, 32.7]
+# lets use the list randomly generated in the previous example !
+
+hyb = hybridize(y)
+# hybridizing y to work with AMD functions
+
+Impulses = detectImp(hyb)
+
+compGraph(hyb,Impulses)
+
+```
+### Resultant Graph:
+![detectImp](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/Detect%20imp.jpeg?raw=true)
+___
+___
 # reduce():- **`Returns a Hybrid`**
 #### **`reduce(hyb)`** is the fucntion header.
 #### This function takes the first two points and creates a point whose x and y co-ordinates are the average of x and y values of the first two points themselves. When repeated, they reduce the x co-ordinates one by one and yet give an approximation of data trend.
