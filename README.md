@@ -1,4 +1,6 @@
-# Arduino_Master_Delta Version 1.0
+# Arduino_Master_Delta(AMD) Version 1.4
+![introPic](https://github.com/SayadPervez/AMD--TUTORIAL/blob/master/IntroPic.png?raw=true)
+![introPic](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/Trust%20me%20both%20are%20same.JPG?raw=true)
 ___
 # What's the difference between Alpha and Delta Versions ?
 #### >>> Alpha version provides ` easier but approximate ` interface for data extraction and Visualization **_(Since X values are automatically generated and fit enables only approximation of the data plotting)_**.
@@ -8,11 +10,17 @@ ___
 #### >>> Link to Arduino_Master (Alpha Version) [Arduino_Master_Alpha](https://pypi.org/project/Arduino-Master/)
 ___
 ___
-# What's New in 1.0 ?
+# What's New in 1.4 ?
 #### >>> Bugs related to readSerial, writeSerial and dynamicSerial fixed.
 #### >>> **`farFrom`** and **`minDeviation`** parameters added to **`filter`** function.
 #### >>> Bugs in filter function that prevented the use of farFrom, closeTo, maxDeviation and minDeviation parameters together **_rectified_**.
-#### >>> **`compress()`** function updated to work with hybrids too !!
+#### >>> **`compress()`** function updated to work with hybrids too !! (Version-0.9.2)
+#### >>> 'avg' can also be passed to **`closeTo`** parameter of the filter function !! (Version-1.2)
+#### >>> **`below`** and **`above`** parameters added to filter function ! (Version-1.3)
+#### >>> 9 new data science functions added !! (Version-1.4)
+___
+___
+### AMD tutorial in this link -> [tutorial](https://github.com/SayadPervez/AMD--TUTORIAL/blob/master/README.md)
 ___
 ___
 # Intro:
@@ -22,7 +30,7 @@ ___
 ___
 # Installing via pip:
 ### Use the following command to install Arduino_Master using pip.
-### **`pip install Arduino_Master_Delta`**
+### **`pip install AMD`**
 ___
 ___
 # Automatic Installation of other required Modules:
@@ -30,7 +38,7 @@ ___
 ___
 ___
 # Importing Functions:
-#### **`from Arduino_Master_Delta import *`** statement is used to import all available functions from Arduino_Master. This version contains the following functions which we'll be discussing shortly. These functions can be  grouped into 2 categories:
+#### **`from AMD import *`** statement is used to import all available functions from Arduino_Master. This version contains the following functions which we'll be discussing shortly. These functions can be  grouped into 2 categories:
 #### >> For Extracting and Writing data to Arduino:
 #### $    ardata
 #### $    readSerial
@@ -47,6 +55,16 @@ ___
 #### $ least_frequent
 #### $ compress
 #### $ filter
+#### >> From Version 1.4 and higher !
+#### $ densePop
+#### $ scarcePop
+#### $ remImp
+#### $ detectImp
+#### $ cleanImpulses
+#### $ reduce
+#### $ instAvg
+#### $ smoothie
+#### $ visualizeSmoothie
 ___
 ___
 # ardata():-       **`Returns a list`**
@@ -233,7 +251,7 @@ data=readSerial(8)
 ___
 ___
 # Introduction to hybrids
-#### hybrid is used to pack both X and Y values of a plot together for easier accessing of functions. A hybrid is basically a tuple of two lists with the first one containing the X values (index) and Y values (amplitude). They have a significant advantage over the limitation offered Dictionaries. In this Delta version, the first parameter of most of the data science functions is a hybrid. The functions discussed before this section returns only a list whereas most of the upcoming functions returns hybrids.
+#### hybrid is used to pack both X and Y values of a plot together for easier accessing of functions. A hybrid is basically a tuple of two lists with the first one containing the X values (index) and the second one containing the Y values (amplitude). They have a significant advantage over the limitation offered by Dictionaries. In this Delta version, the first parameter of most of the data science functions is a hybrid. The functions discussed before this section returns only a list whereas most of the upcoming functions returns hybrids.
 ```python
 # X and Y are lists
 X = [ 1,2,3,4,5,6,7,8,9,10 ]
@@ -246,7 +264,7 @@ hyb = ( [ 1,2,3,4,5,6,7,8,9,10 ] , [ 10,9,8,7,6,1,4,3,2,-5 ] )
 anyFunction( x=X , y=Y )
 
 # Method 2:
-anyFunction( hyb ) # Since for most of the data science fucntions, the first parameter is a hybrid,
+anyFunction( hyb ) # Since for most of the data science functions, the first parameter is a hybrid,
 # it can be passed directly !
 
 # It is evident that Method 2 is less time consuming than Method 1
@@ -255,7 +273,7 @@ ___
 # hybridize:-       **`Returns a hybrid`**
 #### **`hybridize`** takes one or two lists as parameters and returns an hybrid.
 #### **`hybridize ( li1 , li2 = None )`** is the function header.
-#### When two lists are passed, li1 corresponds to index and li2 corresponds to amplitude.
+#### When only one list is passed, the first parameter corresponds to Y-values (amplitude). When two lists are passed, the first list corresponds to X-values (index) and the second list corresponds to Y-values (amplitude).
 ```python
 # X and Y are lists
 X = [ 1,2,3,4,5,6,7,8,9,10 ]
@@ -266,7 +284,7 @@ print(hyb)
 
 # This would print -> ( [ 1,2,3,4,5,6,7,8,9,10 ] , [ 10,9,8,7,6,1,4,3,2,-5 ] )
 ```
-#### When we don't need custom X values, passing just amplitude is enough. In this case X values will be automatically generated from 0 to (length of amplitude list -1)
+#### When we don't need custom X values, passing just amplitude is enough. In this case X values will be automatically generated from 0 to ((length of amplitude list) - 1 )
 ```python
 # X and Y are lists
 X = [ 1,2,3,4,5,6,7,8,9,10 ]
@@ -489,9 +507,9 @@ ___
 ___
 ___
 # compress:-       **`Returns a list if you pass a list. Returns a hybrid if you pass a hybrid`**
-#### **`compress()`** which is used to remove **_repeated and sequential_** set of data with a single piece of data.
+#### **`compress()`** is used to remove **_repeated and sequential_** set of data with a single piece of data.
 #### **`compress(li)`** is the function header.
-#### From this version(0.9.2), compress function is compatible with both lists and hybrids.
+#### From version(0.9.2), compress function is compatible with both lists and hybrids.
 #### If a list is passed, this function returns a list and if a hybrid is passed, this function returns a hybrid.
 #### In the below pic, red colored plot refers to the actual, uncompressed data while blue represents compressed data. As you can see the only purpose of compress is to show the trend of data and since Fit is enabled, an approximation of data is shown. In simple words, **`compress`** replaces continuous equivalent elements by a single element. **`compress`** is used only to visualize how many times a data piece varies to and fro and hence just an approximation. The next pics also has the same color representation as of before and demonstrates **`compress()`** function !
 ## When lists are used, we observe that the compressed data is approximated.
@@ -504,7 +522,7 @@ ___
 ___
 # filter:-       **`Returns a hybrid`**
 #### filter function is used to remove unnecessary data from a list.**_This function is compatible with lists and hybrids._**.This function returns a hybrid !
-#### **`filter( hybrid= None, index= [], data= [], expected= [], expectedType= None, maxDeviation= None, minDeviation= None, closeTo= None, farFrom= None, numeric= True, limit= [], frequentAverage= False )`** is the function header.
+#### **`filter( hybrid= None, index= [], data= [], expected= [], expectedType= None, maxDeviation= None, minDeviation= None, closeTo= None, farFrom= None, numeric= True, limit= [], frequentAverage= False, above= None, below= None )`** is the function header.
 | Parameters   | Usage   |
 |--------------|---------|
 | hybrid = None | Pass an hybrid|
@@ -519,6 +537,8 @@ ___
 |numeric = True| Used to specify if you are looking for numeric data for calculation. If you wish to have strings of data in your filtered list make sure you set numeric to False. numeric = True converts all values to float and that's the reason why when expectedType is used, numeric is set to False. |
 |limit = [ ]| Used to specify filter out garbage values! It basically means, no matter what, the data would not have gone beyond these limits. If it did, it is a Garbage Value. The format is **_limit=[ start-limit , end-limit ]_** |
 |frequentAverage = False|Used to specify if to use most frequent data as average|
+|above = None | Used to filter data above the specified value |
+|below = None | Used to filter data below the specified value |
 
 ___
 ### Why and How average is calculated ?
@@ -572,7 +592,7 @@ void loop()
 ___
 ```Python
 # importing area !!
-from Arduino_Master_Delta import *
+from AMD import *
 
 # collecting data and saving it as a list in rawData
 rawData = ardata(7,lines=50,dynamic=True,msg='d')  # if set is not used, the most repeated set of value would be taken as average !
@@ -729,7 +749,196 @@ compGraph(rawHybrid,filteredHybrid)
 ```
 ___
 ___
+# New functions from version 1.4 or Higher:
+___
+# densePop():- **`Returns a hybrid`**
+#### This function takes a hybrid and gives us the most densely populated region.
+#### **`densePop( hyb )`** is the function header.
+## Eg:
+```python
+from AMD import *
+
+y = [33,34,33.5,32,34,33.6,33.2,33,9,33,7,34,32.7]
+# y contains a list of amplitudes that are closely packed
+
+from random import randint as ri
+
+for _ in range(20):
+    y.insert(ri(0,20),ri(0,70))
+# insert 20 random values at random positions in the list y
+print(y)
+# the randomizing block gave me this list
+# [33, 32, 64, 67, 4, 34, 32, 47, 33.5, 26, 32, 46, 34, 51,
+# 68, 23, 58, 33.6, 33.2, 11, 17, 33, 53, 33, 9, 23, 33, 65,
+# 7, 34, 25, 38, 32.7]
+
+hyb = hybridize(y)
+# hybridizing y to work with AMD functions
+
+denseHyb = densePop(hyb)
+# denseHyb contains the most densely populated
+# region of hyb which is essentially between 32
+# and 34 as in the first version of y !
+
+compGraph(hyb,denseHyb)
+```
+### Resulting Graph:
+#### If you want to filter out the impulses further you can use the same function again or use cleanImpulses().
+![densePop](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/densePop.png?raw=true)
+___
+___
+# scarcePop():- **`Returns a Hybrid`**
+#### This function takes a hybrid and gives us the least densely populated region.
+#### **`scarcePop( hyb )`** is the function header.
+## Eg:
+```python
+from AMD import *
+
+y = [33, 32, 64, 67, 4, 34, 32, 47, 33.5, 26, 32, 46, 34, 51, 68, 23, 58, 33.6, 33.2, 11, 17, 33, 53, 33, 9, 23, 33, 65, 7, 34, 25, 38, 32.7]
+# lets use the list randomly generated in the previous example !
+
+hyb = hybridize(y)
+# hybridizing y to work with AMD functions
+
+scarceHyb = scarcePop(hyb)
+# scarceHyb contains the least densely populated
+# region of hyb which essentially excludes region between 32
+# and 34 !
+
+compGraph(hyb,scarceHyb)
+```
+### Resulting Graph:
+![scarcePop](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/scarcePop.png?raw=true)
+___
+___
+# remImp():- **`Returns a Hybrid`**
+#### This function takes a hybrid and removes impulses almost in the same manner as densePop did !
+#### This function is an alias for densePop.
+___
+___
+# cleanImpulses() **`Returns a Hybrid`**
+#### This function is used to clear out multiple levels of impulses !
+#### **`cleanImpulses( hyb, levels=None )`** is the function header.
+#### levels parameter takes the number of times the remImp function has to be executed to give an almost flat impulse less data. level 0 represents the original data.
+#### If levels parameter is not passed, it filters out all impulses until it is a flat line or a point !
+## Eg:
+```python
+from AMD import *
+
+y = [33, 32, 64, 67, 4, 34, 32, 47, 33.5, 26, 32, 46, 34, 51, 68, 23, 58, 33.6, 33.2, 11, 17, 33, 53, 33, 9, 23, 33, 65, 7, 34, 25, 38, 32.7]
+# lets use the list randomly generated in the previous example !
+
+hyb = hybridize(y)
+# hybridizing y to work with AMD functions
+
+flatData0 = cleanImpulses(hyb,0)
+flatData1 = cleanImpulses(hyb,1)
+flatData2 = cleanImpulses(hyb,2)
+flatDataNone = cleanImpulses(hyb)
+compGraph(hyb,flatData0)
+compGraph(hyb,flatData1)
+compGraph(hyb,flatData2)
+compGraph(hyb,flatDataNone)
+```
+### Resulting Graphs:
+![cleanData1](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/hyb%20vs%20level1.JPG?raw=true)
+![cleanData2](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/level2%20vs%20level3.JPG?raw=true)
+___
+___
+# reduce():- **`Returns a Hybrid`**
+#### **`reduce(hyb)`** is the fucntion header.
+#### This function takes the first two points and creates a point whose x and y co-ordinates are the average of x and y values of the first two points themselves. When repeated, they reduce the x co-ordinates one by one and yet give an approximation of data trend.
+## Eg:
+```python
+from AMD import *
+
+y = [33, 32, 64, 67, 4, 34, 32, 47, 33.5, 26, 32, 46, 34, 51, 68, 23, 58, 33.6, 33.2, 11, 17, 33, 53, 33, 9, 23, 33, 65, 7, 34, 25, 38, 32.7]
+# lets use the list randomly generated in the previous example !
+
+hyb = hybridize(y)
+# hybridizing y to work with AMD functions
+red = hyb
+for _ in range(7):
+    red = reduce(red)
+
+compGraph(hyb,red)
+```
+### Resulting Graph:
+![reduce](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/Reduce.jpeg?raw=true)
+___
+___
+# instAvg():- **`Returns a Hybrid`**
+#### **`instAvg( hyb )`** is the function header.
+#### This function calculates the average between every two points and returns a hybrid containing all these points. This essentially smoothens out the Graph.
+## Eg:
+```python
+from AMD import *
+
+y = [33, 32, 64, 67, 4, 34, 32, 47, 33.5, 26, 32, 46, 34, 51, 68, 23, 58, 33.6, 33.2, 11, 17, 33, 53, 33, 9, 23, 33, 65, 7, 34, 25, 38, 32.7]
+# lets use the list randomly generated in the previous example !
+
+hyb = hybridize(y)
+# hybridizing y to work with AMD functions
+
+insHyb = instAvg(hyb)
+# The more you use this function, the smoother is the graph
+
+compGraph(hyb,insHyb)
+```
+### Resultant Graph:
+![instavg](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/instavg.jpeg?raw=true)
+___
+___
+# smoothie():- **`Returns a Hybrid`**
+#### **`smoothie( hyb , levels= None)`**
+#### Similar to cleanImpulses function being a repetition tool for remImp, smoothie is a repetition function for  instAvg. level 0 represents original data and greater the levels, smoother would be the data. Not passing levels arguement would give just the final point.
+## Eg:
+```python
+from AMD import *
+
+y = [33, 32, 64, 67, 4, 34, 32, 47, 33.5, 26, 32, 46, 34, 51, 68, 23, 58, 33.6, 33.2, 11, 17, 33, 53, 33, 9, 23, 33, 65, 7, 34, 25, 38, 32.7]
+# lets use the list randomly generated in the previous example !
+
+hyb = hybridize(y)
+# hybridizing y to work with AMD functions
+
+sm2 = smoothie( hyb , 2)
+sm15 = smoothie( hyb , 15)
+
+compGraph(sm2,sm15)
+
+```
+### Resulting Graph:
+![smoothie](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/smoothie.jpeg?raw=true)
+___
+___
+# visualizeSmoothie():- **`Returns a Hybrid`**
+#### **`visualizeSmoothie( hyb )`** is the function header.
+#### This function plots all the smoothies with levels from 0 to ((number of index values) - 1)
+#### It indeed gives a beautiful pattern as in the introductory pic of this module !
+## Eg:
+```python
+from AMD import *
+y = [33, 32, 64, 67, 4, 34, 32, 47, 33.5, 26, 32, 46, 34, 51, 68, 23, 58, 33.6, 33.2, 11, 17, 33, 53, 33, 9, 23, 33, 65, 7, 34, 25, 38, 32.7]
+# lets use the list randomly generated in the previous example !
+
+from random import randint as ri
+
+for i in range(30):
+    y.insert(ri(0,30),ri(0,70))
+
+# adding 30 more random values to y
+
+hyb = hybridize(y)
+# hybridizing y to work with AMD functions
+
+visualizeSmoothie(hyb)
+```
+### Resultant Graph:
+![visSm](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/vissm.jpeg?raw=true)
+___
+___
+
 # Developed by SAYAD PERVEZ !!!
-# Trust me Am just 17.
-![Mr_HandSome](https://github.com/SayadPervez/Arduino_Master_Delta/blob/master/Mr_Handsome.jpg?raw=true)
 # EmailID : [pervez2504@gmail.com]
+![mr_handsome](https://avatars2.githubusercontent.com/u/38353201?s=460&v=4)
